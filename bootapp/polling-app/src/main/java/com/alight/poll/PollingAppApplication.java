@@ -7,12 +7,17 @@ import java.util.Map;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alight.poll.model.BasicRequest;
 import com.alight.poll.model.User;
+import com.alight.poll.report.model.ReportDataService;
+import com.alight.poll.report.util.ReportGeneratorService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
@@ -43,6 +48,14 @@ public class PollingAppApplication {
 		}
 		tokenMap.put("error", "Invalid access");
 		return tokenMap;
+	}
+	@RequestMapping(value="/reportdata", method=RequestMethod.POST ,produces="application/json")
+	public static Map<String, Object> getReportData(@RequestBody BasicRequest request) {
+		Map<String, Object> reportData = new HashMap<String, Object>();
+		 ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("bean.xml");
+		 ReportGeneratorService service = (ReportGeneratorService)context.getBean(request.getReportType() + "Generator");
+		context.close();
+		return service.getReport();
 	}
 	
 	public static void main(String[] args) {

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="barChart" class="com.alight.poll.report.model.BarChartReportImpl"></bean>
+	<bean id="lineChart" class="com.alight.poll.report.model.LineChartReportImpl"></bean>
+	<bean id="lineChartGenerator" class="com.alight.poll.report.util.ReportGeneratorService">
+		<property name="reportService">
+			<ref bean="lineChart" />
+		</property>
+	</bean>
+	<bean id="barChartGenerator" class="com.alight.poll.report.util.ReportGeneratorService">
+		<property name="reportService">
+			<ref bean="barChart" />
+		</property>
+	</bean>
+</beans>
